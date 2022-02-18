@@ -1,0 +1,111 @@
+{
+  "userList": [
+    {
+      "username": "anhdd1901",
+      "password": "$2b$10$8fsYd4U57cOuVrIlNMku2ebJsThekbaeM09Wm0CzV0bhXaLBsS2OW",
+      "id": "1ce29a77-a690-4e88-9512-a4d695049ae9",
+      "displayName": "b.wayne",
+      "avatar": "https://w7.pngwing.com/pngs/176/940/png-transparent-batman-logo-bat-signal-bat-animals-heart-logo.png",
+      "rank": 1,
+      "gamePlayed": 0,
+      "gameWon": 0,
+      "longestWinStreak": 0,
+      "currentWinStreak": 0,
+      "inStreak": false,
+      "currentWon": 0
+    },
+    {
+      "username": "dad190193",
+      "password": "$2b$10$LIMOdLkYUGXD2E7G6.XJHOmSYpUl9tkk878Vh9fP.IKmDQEsgTL5e",
+      "id": "81d17b6b-eed0-4156-9d0e-d6b955426385",
+      "displayName": "c.kent",
+      "avatar": "https://wallpaperaccess.com/full/1165655.jpg",
+      "rank": 1,
+      "gamePlayed": 0,
+      "gameWon": 0,
+      "longestWinStreak": 0,
+      "currentWinStreak": 0,
+      "inStreak": false,
+      "currentWon": 0
+    }
+  ],
+  "roomList": [
+    {
+      "id": "01",
+      "status": "waiting",
+      "playerOne": {
+        "id": "01",
+        "username": "luffy",
+        "displayName": "luffy",
+        "avatar": "https://i.pinimg.com/736x/29/88/5b/29885bbba1f52e88bfdeb441e46fb454.jpg",
+        "rank": 1,
+        "gamePlayed": 100,
+        "gameWon": 50,
+        "longestWinStreak": 10,
+        "currentWinStreak": 1,
+        "inStreak": true,
+        "currentWon": 0
+      }
+    },
+    {
+      "id": "02",
+      "status": "playing",
+      "playerOne": {
+        "id": "02",
+        "username": "saitama",
+        "displayName": "saitama",
+        "avatar": "https://hoso.wiki/wp-content/uploads/2020/05/Saitama.jpg.webp",
+        "rank": 18,
+        "gamePlayed": 100,
+        "gameWon": 50,
+        "longestWinStreak": 10,
+        "currentWinStreak": 1,
+        "inStreak": true,
+        "currentWon": 1
+      },
+      "playerTwo": {
+        "id": "03",
+        "username": "doraemon",
+        "displayName": "doraemon",
+        "avatar": "https://static1.bestie.vn/Mlog/ImageContent/201906/chiec-chuong-nho-cua-doraemon-da-dung-va-nhieu-ky-niem-cua-nobita-a41452.jpg",
+        "rank": 48,
+        "gamePlayed": 100,
+        "gameWon": 50,
+        "longestWinStreak": 10,
+        "currentWinStreak": 1,
+        "inStreak": true,
+        "currentWon": 0
+      }
+    },
+    {
+      "id": "03",
+      "status": "playing",
+      "playerOne": {
+        "id": "04",
+        "username": "batman",
+        "displayName": "b.wayne",
+        "avatar": "https://w7.pngwing.com/pngs/176/940/png-transparent-batman-logo-bat-signal-bat-animals-heart-logo.png",
+        "rank": 26,
+        "gamePlayed": 100,
+        "gameWon": 50,
+        "longestWinStreak": 10,
+        "currentWinStreak": 1,
+        "inStreak": true,
+        "currentWon": 1
+      },
+      "playerTwo": {
+        "id": "05",
+        "username": "superman",
+        "displayName": "c.kent",
+        "avatar": "https://wallpaperaccess.com/full/1165655.jpg",
+        "rank": 37,
+        "gamePlayed": 100,
+        "gameWon": 50,
+        "longestWinStreak": 10,
+        "currentWinStreak": 1,
+        "inStreak": true,
+        "currentWon": 2
+      }
+    }
+  ]
+}
