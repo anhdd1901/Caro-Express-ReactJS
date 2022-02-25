@@ -81,7 +81,7 @@ module.exports.checkPasswordValidate = (req, res, next) => {
   if (!checkPasswordSummaryValidate(req.body.password)) {
     res.json({
       errorMess:
-        "Password must be at least 8 characters including at least 01 numeric character & 01 special character",
+        "Password must be at least 8 characters including 01 numeric character & 01 special character",
     });
   } else next();
 };
@@ -106,14 +106,13 @@ module.exports.signUp = (req, res) => {
       password: hash,
       id: uuidv4(),
 
-      displayName: "",
+      displayName: req.body.username.toLowerCase().slice(0, 6),
       avatar: "",
       rank: 1,
       gamePlayed: 0,
       gameWon: 0,
       longestWinStreak: 0,
       currentWinStreak: 0,
-      inStreak: false,
       currentWon: 0,
     })
     .write();

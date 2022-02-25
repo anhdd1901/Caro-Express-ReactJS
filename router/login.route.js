@@ -13,3 +13,5 @@ LoginRouter.post(
   loginServices.checkValid,
   loginServices.login
 );
+
+LoginRouter.post("/auth", loginServices.keepLoginning);

@@ -1,7 +1,6 @@
 // Setup to use router - express
 const express = require("express");
 const RoomRouter = express.Router();
-module.exports = RoomRouter;
 
 // import controller
 const roomServices = require("../services/room");
@@ -14,3 +13,12 @@ RoomRouter.get(
   roomServices.checkAvailableFilter,
   roomServices.getRoomList
 );
+
+RoomRouter.get(
+  "/user/:id",
+  checkLogged.checkLogged,
+  roomServices.checkUserID,
+  roomServices.getUserInfo
+);
+
+module.exports = RoomRouter;
