@@ -19,7 +19,9 @@ module.exports.checkAvailableFilter = (req, res, next) => {
 
 module.exports.getRoomList = (req, res, next) => {
   if (req.query.filter === "all") res.json(roomList);
-  else res.json(roomList.filter((a) => a.status === req.query.filter));
+  else if (req.query.filter === "waiting")
+    res.json(roomList.filter((a) => !a.playerTwo));
+  else res.json(roomList.filter((a) => a.playerTwo));
 };
 
 module.exports.checkUserID = (req, res, next) => {
