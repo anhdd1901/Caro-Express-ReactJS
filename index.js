@@ -22,6 +22,9 @@ app.use(cors());
 // install dot env
 require("dotenv").config();
 
+// import game logic
+const Util = require("./Util");
+
 // Some var
 const port = process.env.PORT;
 const userList = db.get("userList").value();
@@ -55,135 +58,6 @@ const checkSocketToken = (token) => {
   }
 };
 
-// Table size
-const tableSize = process.env.TABLE_SIZE;
-
-// Default table
-const DEFAULT_TABLE = Array.from({ length: tableSize }, () =>
-  Array.from({ length: tableSize }, () => "")
-);
-
-// Setup new move
-const onMove = (
-  rowIndex,
-  colIndex,
-  playingRoomID,
-  yourSymbol,
-  opponentSocketID,
-  socket
-) => {
-  const room = db.get("roomList").find({ id: playingRoomID }).value();
-  const currentGameArray = room.table ? [...room.table] : [...DEFAULT_TABLE];
-  if (!currentGameArray[rowIndex][colIndex]) {
-    currentGameArray[rowIndex][colIndex] = yourSymbol;
-
-    checkWin(
-      rowIndex,
-      colIndex,
-      currentGameArray,
-      yourSymbol,
-      opponentSocketID,
-      socket,
-      playingRoomID
-    );
-  }
-};
-
-// Kinds of win-checker
-const KINDS_OF_WIN_CHECKER = [
-  // Row
-  [
-    [1, 0],
-    [-1, 0],
-  ],
-  // Col
-  [
-    [0, 1],
-    [0, -1],
-  ],
-  // Dash
-  [
-    [1, 1],
-    [-1, -1],
-  ],
-  // Slash
-  [
-    [1, -1],
-    [-1, 1],
-  ],
-];
-
-// Check win
-const checkWin = (
-  rowIndex,
-  colIndex,
-  currentGameArray,
-  currentTurn,
-  opponentSocketID,
-  socket,
-  playingRoomID
-) => {
-  let totalWinStraight = [];
-  let gameOver = false;
-
-  KINDS_OF_WIN_CHECKER.forEach((kindOfWinChecker) => {
-    let winStraight = [[rowIndex, colIndex]];
-
-    kindOfWinChecker.forEach((checkFlow) => {
-      let movingRowIndex = rowIndex;
-      let movingColIndex = colIndex;
-
-      while (
-        movingRowIndex + checkFlow[0] >= 0 &&
-        movingColIndex + checkFlow[1] >= 0 &&
-        movingRowIndex + checkFlow[0] < tableSize &&
-        movingColIndex + checkFlow[1] < tableSize
-      ) {
-        movingRowIndex += checkFlow[0];
-        movingColIndex += checkFlow[1];
-        if (currentGameArray[movingRowIndex][movingColIndex] === currentTurn) {
-          winStraight = [...winStraight, [movingRowIndex, movingColIndex]];
-        } else break;
-      }
-    });
-
-    if (winStraight.length >= 5) {
-      gameOver = true;
-      totalWinStraight = [...totalWinStraight, ...winStraight];
-    }
-  });
-
-  if (gameOver) {
-    console.log("done");
-    db.get("roomList")
-      .find({ id: playingRoomID })
-      .assign({ table: null })
-      .write();
-
-    io.to(opponentSocketID).emit(
-      "opponent-win",
-      rowIndex,
-      colIndex,
-      currentGameArray,
-      totalWinStraight
-    );
-    io.to(socket.id).emit("you-win", totalWinStraight);
-  } else {
-    console.log("continue");
-    db.get("roomList")
-      .find({ id: playingRoomID })
-      .assign({ table: currentGameArray })
-      .write();
-
-    io.to(opponentSocketID).emit(
-      "opponent-move",
-      rowIndex,
-      colIndex,
-      currentGameArray
-    );
-  }
-};
-
 // Socket event
 io.on("connection", (socket) => {
   if (checkSocketToken(socket.handshake.headers.auth)) {
@@ -199,7 +73,7 @@ io.on("connection", (socket) => {
         io.emit("new-room", {
           user: { ...user, password: null },
           socketRoomID: socket.id,
-          table: DEFAULT_TABLE,
+          table: null,
         });
         db.get("roomList")
           .push({
@@ -207,7 +81,8 @@ io.on("connection", (socket) => {
             socketRoomID: socket.id,
             playerOne: { ...user, password: null },
             playerTwo: null,
-            table: null,
+            Xmove: [],
+            Omove: [],
           })
           .write();
       }
@@ -272,16 +147,22 @@ io.on("connection", (socket) => {
     socket.on(
       "on-move",
       (opponentSocketID, playingRoomID, rowIndex, colIndex, yourSymbol) => {
-        onMove(
+        Util.onMove(
           rowIndex,
           colIndex,
           playingRoomID,
           yourSymbol,
           opponentSocketID,
-          socket
+          socket,
+          io
         );
       }
     );
+
+    // Send one-more request
+    socket.on("agree-one-more", (opponentSocketID) => {
+      io.to(opponentSocketID).emit("receive-agree-one-more");
+    });
   } else {
     socket.disconnect(true);
   }
